@@ -1,11 +1,20 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 import io
 import cv2
 import numpy as np
 from .image_processor import make_seamless
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://ik1-130-71958.vs.sakura.ne.jp:8081"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/seamless")
 async def make_image_seamless(file: UploadFile = File(...)):
